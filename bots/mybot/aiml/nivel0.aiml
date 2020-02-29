@@ -1,0 +1,75 @@
+<?xml version="1.0"
+encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Primera regla -->
+<category>
+<pattern>[Hola Buen+] ^ </pattern>
+<template>Hola, que tal?</template>
+</category>
+<!-- Segunda regla -->
+<category>
+<pattern>yo bien ^ que tal ^
+</pattern>
+<template>Muy bien, gracias</template>
+</category>
+
+<!-- Tercera regla -->
+<category>
+<pattern> ^ (poco) ^ de [ti usted] ^</pattern>
+<template>
+Pues soy una persona bastante dinamica y proactiva, a la que le resulta interesante multitud de temas y me gusta estar siempre investigando y leyendo sobre diversos temas.
+</template>
+</category> 
+
+<category>
+<pattern>^ ( [cuent+ detall+ habl+ di+] )^ [ti usted] ^</pattern>
+<template>
+<srai>POCO DE TI</srai>
+</template>
+</category>
+
+<!-- cuarta regla -->
+<category>
+<pattern> ^ [mayor peor] ^ defecto ^</pattern>
+<template>
+Mi mayor defecto seria que me gusta ser muy eficiente y en ocasiones me salto pequeños detalles.
+</template>
+</category>
+
+<category>
+<pattern> ^ [tu su] ^ punto debil ^</pattern>
+<template>
+<srai> mayor defecto</srai>
+</template>
+</category>
+
+
+
+<!-- quinta regla -->
+<category>
+<pattern> ^  ( [mayores mejores] ) ^ [virtudes fortalezas cualidades] ^</pattern>
+<template>
+Pues mis mejores virtudes son que soy bastante constante y disciplinado, trabajo muy bien bajo mucha presion y me adapto a cualquier situación.
+</template>
+</category>
+
+
+<!-- sexta regla -->
+<category>
+<pattern> ^ (persona) ^ creativ+ ^ </pattern>
+<template>
+mmm... Pues la verdad creo que antes lo era más, o quizás por mi anterior trabajo tenia que serlo más. Pero si me considero una persona creativa.
+</template>
+</category>
+
+<!-- septima regla -->
+<category>
+<pattern> ^ [coge+ eleg+ seleccion+ opt+ fichar+] ^ [ti usted] ^ </pattern>
+<template>
+Pues deberiais escogerme a mi porque puedo ayudar a la hora de resolver problemas, ya que me considero una persona muy resolutiva y me comprometo mucho con el objetivo comun de la empresa.
+</template>
+</category>
+
+<!-- fin del aiml -->
+</aiml>

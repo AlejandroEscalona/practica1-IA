@@ -1,0 +1,82 @@
+<?xml version="1.0"
+encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Primera regla -->
+<category>
+<pattern>tienes eso</pattern>
+<template>
+ <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map>
+
+</template>
+</category>
+<!-- Segunda regla -->
+<category>
+<pattern>un segundo
+</pattern>
+<template>
+ Un segundo por favor, voy a mirar..
+</template>
+</category>
+
+<!-- Segunda regla -->
+<category>
+<pattern> para el dia * de *
+</pattern>
+<template>
+<think>
+ <set name="dia"> <star/>  </set> 
+ <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
+ </think>
+ <!-- <srai>QUISIERA UNA CITA PARA EL <get name="dia"/> de <get name="mes2"/> </srai> -->
+ <srai>cita sin inicio</srai>
+</template>
+</category>
+
+
+<category>
+<pattern>Quisiera una cita para el * de *</pattern>
+<template>
+      <think>
+          <srai> para el dia <star/> de <star index="2"/> </srai>
+        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
+      </think>  
+         <srai>UN SEGUNDO</srai>
+        <condition name="huecos">
+            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa dime otro dia</li>
+            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: </li>
+       </condition>     
+       
+</template>
+</category>
+
+<category>
+<pattern>cita sin inicio</pattern>
+<template>
+ <think>
+        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
+      </think>  
+         <srai>UN SEGUNDO</srai>
+        <condition name="huecos">
+            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa dime otro dia</li>
+            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: </li>
+       </condition> 
+</template>
+</category>
+
+
+
+<category>
+<pattern>Es <set>month_es</set> un mes</pattern>
+<template>Si, <star/> es un mes</template>
+</category>
+
+<category>
+<pattern> Es * un mes</pattern>
+<template>No, <star/> no es un mes</template>
+</category>
+
+<!-- fin del aiml -->
+</aiml>
+
+
