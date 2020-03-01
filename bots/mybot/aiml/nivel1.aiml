@@ -28,7 +28,6 @@ encoding="UTF-8"?>
  <set name="dia"> <star/>  </set> 
  <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
  </think>
- <!-- <srai>QUISIERA UNA CITA PARA EL <get name="dia"/> de <get name="mes2"/> </srai> -->
  <srai>cita sin inicio</srai>
 </template>
 </category>
@@ -43,7 +42,7 @@ encoding="UTF-8"?>
       </think>  
          <srai>UN SEGUNDO</srai>
         <condition name="huecos">
-            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa dime otro dia</li>
+            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
             <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: </li>
        </condition>     
        
@@ -64,6 +63,22 @@ encoding="UTF-8"?>
 </template>
 </category>
 
+
+<category>
+<pattern>esta ocupado a las *</pattern>
+<template>
+<set name="hora"><star/> </set>
+<srai> IS BUSY DAY <get name="dia"/>-<get name="mes"/>-20 AT <get name="hora"/> </srai>
+</template>
+</category>
+
+
+<category>
+<pattern>marcar como ocupado</pattern>
+<template>
+<srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
+</template>
+</category>
 
 
 <category>
