@@ -11,7 +11,7 @@ encoding="UTF-8"?>
 </template>
 </category>
 
-<!-- REGLA PARA GUARDAR DIA Y MES-->
+<!-- REGLA PARA GUARDAR DIA Y MES y sus horas-->
 <category>
 <pattern> save dia * y mes *
 </pattern>
@@ -19,8 +19,28 @@ encoding="UTF-8"?>
 <think>
  <set name="dia"> <star/>  </set> 
  <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
+ <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
+
  </think>
  <srai>cita sin inicio</srai>
+</template>
+</category>
+
+<!-- REGLA PARA COMPROBAR HUECO -->
+<category>
+<pattern> comprobar hueco
+</pattern>
+<template>
+ <think>
+        <set name="hayhueco"> 
+        <srai> FINDITEM null IN <get name="huecos" /> </srai>
+        </set>
+</think>
+        <condition name="hayhueco">
+            <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
+             <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
+            </li>
+         </condition>   
 </template>
 </category>
 
@@ -30,33 +50,20 @@ encoding="UTF-8"?>
 <template>
       <think>
           <srai> save dia <star/> y mes <star index="2"/> </srai>
-        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
       </think>  
          <srai>UN SEGUNDO</srai>
-         <think>"
-        <set name="hayhueco"> 
-            <srai> FINDITEM null IN <get name="huecos" /> </srai>
-         </set>
-         </think>
-        <condition name="hayhueco">
-            <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
-             <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
-            </li>
-       </condition>     
+         <srai> COMPROBAR HUECO </srai>
+      
        
 </template>
 </category>
 
-<!-- Segunda regla -->
+<!-- REGLA PARA PEDIR DE NUEVO HORA Y DIA -->
 <category>
 <pattern> para el dia * de *
 </pattern>
 <template>
-<think>
- <set name="dia"> <star/>  </set> 
- <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
- </think>
- <srai>cita sin inicio</srai>
+<srai>quisiera una cita para el <star/> de <star index="2"/> </srai>
 </template>
 </category>
 
