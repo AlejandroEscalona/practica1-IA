@@ -2,7 +2,7 @@
 encoding="UTF-8"?>
 <aiml version="2.0">
 
-<!-- Primera regla -->
+<!-- TEST -->
 <category>
 <pattern>tienes eso</pattern>
 <template>
@@ -10,12 +10,40 @@ encoding="UTF-8"?>
 
 </template>
 </category>
-<!-- Segunda regla -->
+
+<!-- REGLA PARA GUARDAR DIA Y MES-->
 <category>
-<pattern>un segundo
+<pattern> save dia * y mes *
 </pattern>
 <template>
- Un segundo por favor, voy a mirar..
+<think>
+ <set name="dia"> <star/>  </set> 
+ <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
+ </think>
+ <srai>cita sin inicio</srai>
+</template>
+</category>
+
+<!-- REGLA PARA PEDIR CITA -->
+<category>
+<pattern>Quisiera una cita para el * de *</pattern>
+<template>
+      <think>
+          <srai> save dia <star/> y mes <star index="2"/> </srai>
+        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
+      </think>  
+         <srai>UN SEGUNDO</srai>
+         <think>"
+        <set name="hayhueco"> 
+            <srai> FINDITEM null IN <get name="huecos" /> </srai>
+         </set>
+         </think>
+        <condition name="hayhueco">
+            <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
+             <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
+            </li>
+       </condition>     
+       
 </template>
 </category>
 
@@ -33,22 +61,9 @@ encoding="UTF-8"?>
 </category>
 
 
-<category>
-<pattern>Quisiera una cita para el * de *</pattern>
-<template>
-      <think>
-          <srai> para el dia <star/> de <star index="2"/> </srai>
-        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
-      </think>  
-         <srai>UN SEGUNDO</srai>
-        <condition name="huecos">
-            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
-            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: </li>
-       </condition>     
-       
-</template>
-</category>
 
+
+<!-- REGLA PARA PEDIR CITA SIN DECIR DIA -->
 <category>
 <pattern>cita sin inicio</pattern>
 <template>
@@ -58,12 +73,54 @@ encoding="UTF-8"?>
          <srai>UN SEGUNDO</srai>
         <condition name="huecos">
             <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa dime otro dia</li>
-            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: </li>
+            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
+            </li>
        </condition> 
 </template>
 </category>
 
+<!-- REGLA PARA MOSTRAR LAS HORAS
 
+<category>
+<pattern>mostrar horas</pattern>
+<template>
+hola
+<think>
+<set name="subhorario">
+    <srai> SUBLIST FROM 8 TO 20 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+</set>
+<set name="contador"> 8 </set>
+<set var="horita">
+    <srai> ITERATE <get name="subhorario"/> <srai>
+</set>
+    </think>   
+    <condicion var="horita">
+        <li value="end">   </li>
+        <li value="null"> <loop/> <get name="contador"/>     
+        <think>
+        <set name="contador"> <srai> PLUS <get name="contador"/> </srai> </set>
+            <set var="horita">
+                <srai>NEXT</srai>
+            </set>
+        </think>
+        <loop/>
+        </li>
+        <li value="ocupado"> 
+          <think>
+        <set name="contador"> <srai> PLUS <get name="contador"/> </srai> </set>
+            <set var="horita">
+                <srai>NEXT</srai>
+            </set>
+        </think>
+        <loop/>
+        </li>
+     </condition>   
+    
+</template>
+</category>
+-->
+
+<!-- REGLA PARA VER SI ESTA OCUPADO UNA HORA -->
 <category>
 <pattern>esta ocupado a las *</pattern>
 <template>
@@ -72,13 +129,23 @@ encoding="UTF-8"?>
 </template>
 </category>
 
-
+<!-- REGLA QUE MARCA COMO OCUPADO UN DIA Y UNA HORA -->
 <category>
 <pattern>marcar como ocupado</pattern>
 <template>
 <srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
 </template>
 </category>
+
+<!-- REGLA PARA ESPERAR  -->
+<category>
+<pattern>un segundo
+</pattern>
+<template>
+ Un segundo por favor, voy a mirar..
+</template>
+</category>
+
 
 
 <category>
