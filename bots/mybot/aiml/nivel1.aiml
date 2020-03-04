@@ -67,35 +67,18 @@ encoding="UTF-8"?>
 </template>
 </category>
 
-
-
-
-<!-- REGLA PARA PEDIR CITA SIN DECIR DIA -->
-<category>
-<pattern>cita sin inicio</pattern>
-<template>
- <think>
-        <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
-      </think>  
-         <srai>UN SEGUNDO</srai>
-        <condition name="huecos">
-            <li value="unknown"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa dime otro dia</li>
-            <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
-            </li>
-       </condition> 
-</template>
-</category>
-
-<!-- REGLA PARA MOSTRAR LAS HORAS
+ <!-- REGLA PARA MOSTRAR LAS HORAS -->
 
 <category>
 <pattern>mostrar horas</pattern>
 <template>
-hola
-<think>
 <set name="subhorario">
-    <srai> SUBLIST FROM 8 TO 20 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
-</set>
+    <srai> SUBLIST FROM 9 TO 21 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+</set> 
+
+</template>
+</category>
+<!--
 <set name="contador"> 8 </set>
 <set var="horita">
     <srai> ITERATE <get name="subhorario"/> <srai>
