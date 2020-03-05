@@ -38,7 +38,7 @@ encoding="UTF-8"?>
 </think>
         <condition name="hayhueco">
             <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
-             <li> Si, para ese dia si hay hueco. A que hora le gustaria entre: <srai> mostrar horas </srai>
+             <li> Si, para ese dia si hay hueco. A que hora le gustaria, tiene alguna preferencia entre mañanas o tardes, o le da igual?
             </li>
          </condition>   
 </template>
@@ -67,10 +67,98 @@ encoding="UTF-8"?>
 </template>
 </category>
 
+<!-- REGLA PARA MAÑANAS -->
+<category>
+<pattern>por la mañana</pattern>
+<template>
+De acuerdo, pues hay estas horas libres:
+<think>
+<set name="subhorario">
+    <srai> SUBLIST FROM 9 TO 15 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+</set> 
+<set name="contador"> 8 </set>
+<set var="horita">
+    <srai> ITERATE <get name="subhorario"/> </srai>
+</set>
+</think>
+<condition var="horita">
+    <li value="end"></li>
+    <li value="null"> <get name="contador"/>:00
+        <think>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set var="horita">
+            <srai> NEXT </srai>
+            </set>
+        </think>
+    <loop/>
+    </li>
+    <li value="ocupado">
+    <think>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set var="horita">
+            <srai> NEXT </srai>
+            </set>
+        </think>
+        <loop/>
+    </li>
+</condition>   
+</template>
+</category>
+
+
+<!-- REGLA PARA TARDES -->
+<category>
+<pattern>por la tarde</pattern>
+<template>
+De acuerdo, pues hay estas horas libres:
+<think>
+<set name="subhorario">
+    <srai> SUBLIST FROM 16 TO 21 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+</set> 
+<set name="contador"> 15 </set>
+<set var="horita">
+    <srai> ITERATE <get name="subhorario"/> </srai>
+</set>
+</think>
+<condition var="horita">
+    <li value="end"></li>
+    <li value="null"> <get name="contador"/>:00
+        <think>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set var="horita">
+            <srai> NEXT </srai>
+            </set>
+        </think>
+    <loop/>
+    </li>
+    <li value="ocupado">
+    <think>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set var="horita">
+            <srai> NEXT </srai>
+            </set>
+        </think>
+        <loop/>
+    </li>
+</condition>   
+</template>
+</category>
+
+
+
+
  <!-- REGLA PARA MOSTRAR LAS HORAS -->
 
 <category>
-<pattern>mostrar horas</pattern>
+<pattern>me da igual</pattern>
 <template>
 <think>
 <set name="subhorario">
@@ -83,7 +171,7 @@ encoding="UTF-8"?>
 </think>
 <condition var="horita">
     <li value="end"></li>
-    <li value="null"> <get name="contador"/>
+    <li value="null"> <get name="contador"/>:00
         <think>
             <set name="contador"> 
             <srai> SUMA <get name="contador"/> 1 </srai>
@@ -94,18 +182,20 @@ encoding="UTF-8"?>
         </think>
     <loop/>
     </li>
+    <li value="ocupado">
+    <think>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set var="horita">
+            <srai> NEXT </srai>
+            </set>
+        </think>
+        <loop/>
+    </li>
 </condition>   
 </template>
 </category>
-
-<!-- REGLA QUE ME DICE LAS HORAS LIBRES QUE HAY-->
-<category>
-<pattern>marcar como ocupado</pattern>
-<template>
-<srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
-</template>
-</category>
-
 
 
 <!-- REGLA PARA VER SI ESTA OCUPADO UNA HORA -->
@@ -117,10 +207,14 @@ encoding="UTF-8"?>
 </template>
 </category>
 
-<!-- REGLA QUE MARCA COMO OCUPADO UN DIA Y UNA HORA -->
-<category>
-<pattern>marcar como ocupado</pattern>
+
+<!-- REGLA PARA PEDIR UNA HORA -->
+<category>  
+<pattern>^ quiero a las *</pattern>
 <template>
+<think>
+<set name="hora"><star index="2"/> </set>
+</think>
 <srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
 </template>
 </category>
