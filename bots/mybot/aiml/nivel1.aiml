@@ -72,43 +72,41 @@ encoding="UTF-8"?>
 <category>
 <pattern>mostrar horas</pattern>
 <template>
+<think>
 <set name="subhorario">
     <srai> SUBLIST FROM 9 TO 21 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
-
-</template>
-</category>
-<!--
 <set name="contador"> 8 </set>
 <set var="horita">
-    <srai> ITERATE <get name="subhorario"/> <srai>
+    <srai> ITERATE <get name="subhorario"/> </srai>
 </set>
-    </think>   
-    <condicion var="horita">
-        <li value="end">   </li>
-        <li value="null"> <loop/> <get name="contador"/>     
+</think>
+<condition var="horita">
+    <li value="end"></li>
+    <li value="null"> <get name="contador"/>
         <think>
-        <set name="contador"> <srai> PLUS <get name="contador"/> </srai> </set>
+            <set name="contador"> 
+            <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
             <set var="horita">
-                <srai>NEXT</srai>
+            <srai> NEXT </srai>
             </set>
         </think>
-        <loop/>
-        </li>
-        <li value="ocupado"> 
-          <think>
-        <set name="contador"> <srai> PLUS <get name="contador"/> </srai> </set>
-            <set var="horita">
-                <srai>NEXT</srai>
-            </set>
-        </think>
-        <loop/>
-        </li>
-     </condition>   
-    
+    <loop/>
+    </li>
+</condition>   
 </template>
 </category>
--->
+
+<!-- REGLA QUE ME DICE LAS HORAS LIBRES QUE HAY-->
+<category>
+<pattern>marcar como ocupado</pattern>
+<template>
+<srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
+</template>
+</category>
+
+
 
 <!-- REGLA PARA VER SI ESTA OCUPADO UNA HORA -->
 <category>
