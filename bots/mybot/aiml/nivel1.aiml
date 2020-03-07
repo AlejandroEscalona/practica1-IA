@@ -74,19 +74,24 @@ encoding="UTF-8"?>
 De acuerdo, pues hay estas horas libres:
 <think>
 <set name="subhorario">
-    <srai> SUBLIST FROM 9 TO 15 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+    <srai> SUBLIST FROM 9 TO 14 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
 <set name="contador"> 8 </set>
+<set name="listadehoras"> <get name="contador"/>:00 </set>
 <set var="horita">
     <srai> ITERATE <get name="subhorario"/> </srai>
 </set>
+<get name="listadehoras"/>   
 </think>
 <condition var="horita">
     <li value="end"></li>
-    <li value="null"> <get name="contador"/>:00
+    <li value="null"> 
         <think>
             <set name="contador"> 
             <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+            <set name="listadehoras">
+            <srai> ADDITEM <get name="contador"/>:00 IN <get name="listadehoras"/> </srai>
             </set>
             <set var="horita">
             <srai> NEXT </srai>
@@ -105,7 +110,9 @@ De acuerdo, pues hay estas horas libres:
         </think>
         <loop/>
     </li>
-</condition>   
+</condition>
+<get name="listadehoras"/>
+Dime la hora que desea por favor    
 </template>
 </category>
 
@@ -117,19 +124,23 @@ De acuerdo, pues hay estas horas libres:
 De acuerdo, pues hay estas horas libres:
 <think>
 <set name="subhorario">
-    <srai> SUBLIST FROM 16 TO 21 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+    <srai> SUBLIST FROM 16 TO 20 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
 <set name="contador"> 15 </set>
+<set name="listadehoras"> <get name="contador"/>:00 </set>
 <set var="horita">
     <srai> ITERATE <get name="subhorario"/> </srai>
 </set>
 </think>
 <condition var="horita">
     <li value="end"></li>
-    <li value="null"> <get name="contador"/>:00
+    <li value="null"> 
         <think>
             <set name="contador"> 
             <srai> SUMA <get name="contador"/> 1 </srai>
+            </set>
+             <set name="listadehoras">
+            <srai> ADDITEM <get name="contador"/>:00 IN <get name="listadehoras"/> </srai>
             </set>
             <set var="horita">
             <srai> NEXT </srai>
@@ -148,7 +159,9 @@ De acuerdo, pues hay estas horas libres:
         </think>
         <loop/>
     </li>
-</condition>   
+</condition> 
+<get name="listadehoras"/>
+Dime la hora que desea por favor  
 </template>
 </category>
 
@@ -164,35 +177,19 @@ De acuerdo, pues hay estas horas libres:
 <set name="subhorario">
     <srai> SUBLIST FROM 9 TO 21 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
-<set name="contador"> 8 </set>
-<set var="horita">
-    <srai> ITERATE <get name="subhorario"/> </srai>
+<set var="horita"> 
+<srai> FINDITEM null IN <get name="subhorario"/> </srai>
 </set>
 </think>
 <condition var="horita">
-    <li value="end"></li>
-    <li value="null"> <get name="contador"/>:00
-        <think>
-            <set name="contador"> 
-            <srai> SUMA <get name="contador"/> 1 </srai>
-            </set>
-            <set var="horita">
-            <srai> NEXT </srai>
-            </set>
-        </think>
-    <loop/>
+    <li value="0"></li>
+    <li> 
+        <set name="horaacordada">
+         <srai> SUMA <get var="horita"/> 8  </srai>
+          </set>
+        <srai> QUIERO PARA LAS <get name="horaacordada"/> </srai>  
     </li>
-    <li value="ocupado">
-    <think>
-            <set name="contador"> 
-            <srai> SUMA <get name="contador"/> 1 </srai>
-            </set>
-            <set var="horita">
-            <srai> NEXT </srai>
-            </set>
-        </think>
-        <loop/>
-    </li>
+
 </condition>   
 </template>
 </category>
@@ -210,12 +207,25 @@ De acuerdo, pues hay estas horas libres:
 
 <!-- REGLA PARA PEDIR UNA HORA -->
 <category>  
-<pattern>^ quiero a las *</pattern>
+<pattern>quiero [para a] las *</pattern>
 <template>
 <think>
-<set name="hora"><star index="2"/> </set>
+<set name="hora"><star/> </set>
 </think>
 <srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
+Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get name="dia"/>-<get name="mes"/>
+</template>
+</category>
+
+<!-- REGLA PARA PEDIR UNA HORA SI LE DA IGUAL -->
+<category>  
+<pattern>le da igual hora</pattern>
+<template>
+<think>
+<set name="hora"> <get name="horaacordada"/> </set>
+</think>
+<srai>  </srai>
+Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get name="dia"/>-<get name="mes"/>
 </template>
 </category>
 
