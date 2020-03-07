@@ -17,12 +17,10 @@ encoding="UTF-8"?>
 </pattern>
 <template>
 <think>
- <set name="dia"> <star/>  </set> 
- <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
- <set name="huecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
-
+    <set name="dia"> <star/>  </set> 
+    <set name="mes"> <map name="month_index_ES"> <star index="2"/> </map> </set>
+    <set name="hayhuecos"> <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </set>
  </think>
- <srai>cita sin inicio</srai>
 </template>
 </category>
 
@@ -31,12 +29,12 @@ encoding="UTF-8"?>
 <pattern> comprobar hueco
 </pattern>
 <template>
- <think>
-        <set name="hayhueco"> 
-        <srai> FINDITEM null IN <get name="huecos" /> </srai>
-        </set>
-</think>
-        <condition name="hayhueco">
+    <think>
+    <set var="hueco"> 
+        <srai> FINDITEM null IN <get name="hayhuecos"/> </srai>
+    </set>
+    </think>
+        <condition var="hueco">
             <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
              <li> Si, para ese dia si hay hueco. A que hora le gustaria, tiene alguna preferencia entre mañanas o tardes, o le da igual?
             </li>
@@ -74,7 +72,7 @@ encoding="UTF-8"?>
 De acuerdo, pues hay estas horas libres:
 <think>
 <set name="subhorario">
-    <srai> SUBLIST FROM 9 TO 14 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+    <srai> SUBLIST FROM 9 TO 12 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
 <set name="contador"> 8 </set>
 <set name="listadehoras"> <get name="contador"/>:00 </set>
@@ -112,7 +110,7 @@ De acuerdo, pues hay estas horas libres:
     </li>
 </condition>
 <get name="listadehoras"/>
-Dime la hora que desea por favor    
+Dime la hora que desea por favor  
 </template>
 </category>
 
@@ -124,9 +122,9 @@ Dime la hora que desea por favor
 De acuerdo, pues hay estas horas libres:
 <think>
 <set name="subhorario">
-    <srai> SUBLIST FROM 16 TO 20 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
+    <srai> SUBLIST FROM 13 TO 19 OF <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map> </srai>
 </set> 
-<set name="contador"> 15 </set>
+<set name="contador"> 13 </set>
 <set name="listadehoras"> <get name="contador"/>:00 </set>
 <set var="horita">
     <srai> ITERATE <get name="subhorario"/> </srai>
@@ -168,7 +166,7 @@ Dime la hora que desea por favor
 
 
 
- <!-- REGLA PARA MOSTRAR LAS HORAS -->
+ <!-- REGLA PARA DARLE CITA CUANDO LE DA IGUAL LA HORA -->
 
 <category>
 <pattern>me da igual</pattern>
@@ -184,10 +182,12 @@ Dime la hora que desea por favor
 <condition var="horita">
     <li value="0"></li>
     <li> 
-        <set name="horaacordada">
-         <srai> SUMA <get var="horita"/> 8  </srai>
-          </set>
-        <srai> QUIERO PARA LAS <get name="horaacordada"/> </srai>  
+        <think>
+            <set name="horaacordada">
+            <srai> SUMA <get var="horita"/> 9  </srai>
+            </set>
+        </think>
+        <srai>  LE DA IGUAL HORA </srai>  
     </li>
 
 </condition>   
@@ -207,13 +207,13 @@ Dime la hora que desea por favor
 
 <!-- REGLA PARA PEDIR UNA HORA -->
 <category>  
-<pattern>quiero [para a] las *</pattern>
+<pattern>(quiero) [para a] las *</pattern>
 <template>
 <think>
 <set name="hora"><star/> </set>
 </think>
 <srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
-Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get name="dia"/>-<get name="mes"/>
+Perfecto pues ya tiene su cita reservada a las <get name="hora"/>:00 el dia <get name="dia"/>-<get name="mes"/>
 </template>
 </category>
 
@@ -224,8 +224,8 @@ Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get na
 <think>
 <set name="hora"> <get name="horaacordada"/> </set>
 </think>
-<srai>  </srai>
-Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get name="dia"/>-<get name="mes"/>
+<srai> MARK OCUPADO AT <get name="hora"/> ON <get name="dia"/>-<get name="mes"/>-20   </srai>
+Perfecto pues ya tiene su cita reservada a las <get name="hora"/>:00 el dia <get name="dia"/>-<get name="mes"/>
 </template>
 </category>
 
@@ -248,6 +248,11 @@ Perfecto pues ya tiene su cita reservada a las <get name="hora"/> el dia <get na
 <category>
 <pattern> Es * un mes</pattern>
 <template>No, <star/> no es un mes</template>
+</category>
+
+<category>
+<pattern> ^ no ^</pattern>
+<template>De acuerdo pues muchas gracias por el interes.</template>
 </category>
 
 <!-- fin del aiml -->
