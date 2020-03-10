@@ -1,6 +1,11 @@
 <?xml version="1.0"
 encoding="UTF-8"?>
 <aiml version="2.0">
+<!-- TEn este nivel se nos pide que el usuario pueda usar conjuntos de palabras como pasado mañana, la semana que viene, el proximo lunes y 
+el bot sepa guardar la cita correctamente -->
+
+
+
 
 <!-- TEST -->
 <category>
