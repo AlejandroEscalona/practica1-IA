@@ -1,4 +1,4 @@
-07-02-20:OCUPADO null null null null null null null OCUPADO null null null null null null null null null null null OCUPADO null null OCUPADO
+07-02-20:null null null null null null null null OCUPADO null null null null null null null null null null null OCUPADO null null OCUPADO
 08-02-20:null null null null null null null null null null null null null null null null null null null null null null null null
 09-02-20:null null null null null null null null null null null null null null null null null null null null null null null null
 10-02-20:null null null null null null null null null null null null null null null null null null null null null null null null
