@@ -47,19 +47,28 @@ el bot sepa guardar la cita correctamente -->
 </template>
 </category>
 
-<!-- REGLA PARA PEDIR CITA -->
+
+
+
+<!-- REGLA PARA PEDIR CITA CON COMPLEMENTO-->
 <category>
-<pattern>Quisiera una cita para el * de *</pattern>
+<pattern>
+Me gustaria una cita para el * de * por la *
+</pattern>
 <template>
-      <think>
-          <srai> save dia <star/> y mes <star index="2"/> </srai>
-      </think>  
-         <srai>UN SEGUNDO</srai>
-         <srai> COMPROBAR HUECO </srai>
-      
-       
+    <srai> save dia <star/> y mes <star index="2"/> </srai>
+    <set name="momentodia"> <star index="3"/> </set>
+    <condition name="momentodia">
+        <li value="tarde">
+            <srai> POR LA TARDE </srai>
+        </li>
+        <li value="mañana">
+            <srai> POR LA MAÑANA </srai>
+        </li>
+    </condition> 
 </template>
 </category>
+
 
 <!-- REGLA PARA PEDIR DE NUEVO HORA Y DIA -->
 <category>
