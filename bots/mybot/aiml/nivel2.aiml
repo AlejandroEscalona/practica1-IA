@@ -172,7 +172,7 @@ Me gustaria una cita para el * de * por la *
 
 <!-- REGLA PARA PEDIR CITA HOY O MAÑANA -->
 <category>
-<pattern> Quiero una cita *
+<pattern> para * tienes algun hueco
 </pattern>
 <template>
 <set var="diad"> <star/> </set>
@@ -218,9 +218,42 @@ Me gustaria una cita para el * de * por la *
     </li>
     </condition>
 
-      
 </template>
 </category>
+
+<!-- REGLA ESPECIFICA PARA PEDIR HOY O MAÑANA A UNA HORA -->
+<category>
+<pattern> me gustaria pedir una cita para * a las * </pattern>
+<template>
+<think>
+    <set var="diad"> <star/> </set>
+    <condition var="diad">
+    <li value="hoy">
+        <srai> funcion cita hoy</srai>
+        <srai> comprobar hueco por la </srai>
+    </li>
+    <li value="mañana"> 
+        <srai>funcion cita mañana</srai>
+         <srai> comprobar hueco por la </srai>
+    </li>
+    </condition>
+
+    <set var="horap"> <star index="2"/> </set>
+    <set var="horadisponible"> <srai> esta ocupado a las <get var="horap"/> </srai> </set>
+    <set var="horafinal"> <srai> ITERATE <get var="horadisponible"/> </srai> </set>
+    <set var="horafinal"> <srai> NEXT  </srai> </set>
+     </think>
+    <condition var="horafinal">
+    <li value="FALSE">
+        <srai> para las <get var="horap"/> </srai>
+    </li>
+    <li>lo siento, pero esa hora no esta disponible </li>
+    </condition>
+   
+</template>
+</category>
+
+
 
 <!-- REGLA ESPECIFICA PARA PEDIR CITA HOY -->
 <category>
