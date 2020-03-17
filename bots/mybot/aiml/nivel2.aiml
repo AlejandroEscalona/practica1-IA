@@ -6,16 +6,6 @@ el bot sepa guardar la cita correctamente -->
 
 
 
-
-<!-- TEST -->
-<category>
-<pattern>tienes eso</pattern>
-<template>
- <map name="eventos"><get name="dia"/>-<get name="mes"/>-20</map>
-
-</template>
-</category>
-
 <!-- REGLA PARA GUARDAR DIA Y MES y sus horas-->
 <category>
 <pattern> save dia * y mes *
@@ -129,6 +119,43 @@ Me gustaria una cita para el * de * por la *
 </template>
 </category>
 
+<!-- REGLA PARA PEDIR CITA PASADO MAÑANA A UNA HORA-->
+<category>
+<pattern> Quiero una cita para pasado mañana a las *
+</pattern>
+<template>
+<think>
+<set var="fecha"> <srai> dayaftertomorrowdate</srai> </set>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+
+
+
+    <set var="horap"> <star /> </set>
+    <set var="horadisponible"> <srai> esta ocupado a las <get var="horap"/> </srai> </set>
+    <set var="horafinal"> <srai> ITERATE <get var="horadisponible"/> </srai> </set>
+    <set var="horafinal"> <srai> NEXT  </srai> </set>
+    </think>
+    <condition var="horafinal">
+    <li value="FALSE">
+        <srai> para las <get var="horap"/> </srai>
+    </li>
+    <li>lo siento, pero esa hora no esta disponible </li>
+    </condition>
+      
+</template>
+</category>
+
 
 
 <!-- REGLA PARA PEDIR CITA ESPECIFICANDO DIA SEMANA Y COMPLEMENTO -->
@@ -168,6 +195,45 @@ Me gustaria una cita para el * de * por la *
 </template>
 </category>
 
+<!-- REGLA PARA PEDIR CITA ESPECIFICANDO DIA SEMANA Y HORA-->
+<category>
+<pattern> Quiero una cita  el [proximo siguiente] * a las  *
+</pattern>
+<template>
+<think>
+<set var="diasemana">  <star/>  </set>
+<set var="fecha"> <srai> date on <get var="diasemana"/> </srai> </set>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+</think>
+
+<srai> comprobar hueco por la </srai>
+
+    <think>
+    <set var="horap"> <star index="2"/> </set>
+    <set var="horadisponible"> <srai> esta ocupado a las <get var="horap"/> </srai> </set>
+    <set var="horafinal"> <srai> ITERATE <get var="horadisponible"/> </srai> </set>
+    <set var="horafinal"> <srai> NEXT  </srai> </set>
+     </think>
+    <condition var="horafinal">
+    <li value="FALSE">
+        <srai> para las <get var="horap"/> </srai>
+    </li>
+    <li>lo siento, pero esa hora no esta disponible </li>
+    </condition>
+      
+</template>
+</category>
 
 
 <!-- REGLA PARA PEDIR CITA HOY O MAÑANA -->
