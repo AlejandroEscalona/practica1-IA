@@ -47,6 +47,24 @@ el bot sepa guardar la cita correctamente -->
 </template>
 </category>
 
+<!-- REGLA PARA COMPROBAR HUECO -->
+<category>
+<pattern> comprobar hueco por la
+</pattern>
+<template>
+    <think>
+    <set var="hueco"> 
+        <srai> FINDITEM null IN <get name="hayhuecos"/> </srai>
+    </set>
+    </think>
+        <condition var="hueco">
+            <li value="0"> Lo siento, para el dia <get name="dia"/>-<get name="mes"/> no hay ningun hueco libre, si le interesa digame otro dia</li>
+             <li> Si, para ese dia si hay hueco. ¿A que hora le gustaria?
+            </li>
+         </condition>   
+</template>
+</category>
+
 
 
 
@@ -83,7 +101,7 @@ Me gustaria una cita para el * de * por la *
 </template>
 </category>
 
-<!-- REGLA PARA PEDIR CITA ESPECIFICANDO DIA Y COMPLEMENTO -->
+<!-- REGLA PARA PEDIR CITA PASADO MAÑANA -->
 <category>
 <pattern> Quiero una cita para pasado mañana
 </pattern>
@@ -111,24 +129,106 @@ Me gustaria una cita para el * de * por la *
 </template>
 </category>
 
+
+
+<!-- REGLA PARA PEDIR CITA ESPECIFICANDO DIA SEMANA Y COMPLEMENTO -->
+<category>
+<pattern> Quiero una cita  el [proximo siguiente] * por la *
+</pattern>
+<template>
+<think>
+<set var="diasemana">  <star/>  </set>
+<set var="fecha"> <srai> date on <get var="diasemana"/> </srai> </set>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+</think>
+
+<srai> comprobar hueco por la </srai>
+
+<set var="momentodia"> <star index="2"/> </set>
+    <condition var="momentodia">
+    <li value="mañana">
+        <srai> por la mañana</srai> 
+    </li>
+    <li value="tarde"> 
+        <srai>por la tarde</srai>
+    </li>
+    </condition>
+      
+</template>
+</category>
+
+
+
 <!-- REGLA PARA PEDIR CITA HOY O MAÑANA -->
 <category>
 <pattern> Quiero una cita *
 </pattern>
 <template>
-
-    <set var="diad"> <star/> </set>
+<set var="diad"> <star/> </set>
     <condition var="diad">
     <li value="hoy">
-        <set var="fecha"> <srai> date</srai> </set>
+        <srai> funcion cita hoy</srai>
+        <srai> COMPROBAR HUECO </srai> 
     </li>
     <li value="mañana"> 
-        <set var="fecha"> <srai>date tomorrow</srai> </set>
+        <srai>funcion cita mañana</srai>
+        <srai> COMPROBAR HUECO </srai>
     </li>
     </condition>
 
+      
+</template>
+</category>
 
+<!-- REGLA PARA PEDIR CITA HOY O MAÑANA con COMPLEMENTO -->
+<category>
+<pattern> Quiero una cita * por la *
+</pattern>
+<template>
+<set var="diad"> <star/> </set>
+    <condition var="diad">
+    <li value="hoy">
+        <srai> funcion cita hoy</srai>
+        <srai> comprobar hueco por la </srai>
+    </li>
+    <li value="mañana"> 
+        <srai>funcion cita mañana</srai>
+         <srai> comprobar hueco por la </srai>
+    </li>
+    </condition>
+
+    <set var="complementod"> <star index="2"/> </set>
+    <condition var="complementod">
+    <li value="mañana">
+        <srai> por la mañana</srai> 
+    </li>
+    <li value="tarde"> 
+        <srai>por la tarde</srai>
+    </li>
+    </condition>
+
+      
+</template>
+</category>
+
+<!-- REGLA ESPECIFICA PARA PEDIR CITA HOY -->
+<category>
+<pattern> funcion cita hoy 
+</pattern>
+<template>
 <think>
+<set var="fecha"> <srai> date</srai> </set>
 <set var="dia"> 
     <srai> ITERATE <get var="fecha"/> </srai>
 </set>
@@ -145,10 +245,41 @@ Me gustaria una cita para el * de * por la *
 </think>
 
          <srai>UN SEGUNDO</srai>
-         <srai> COMPROBAR HUECO </srai>
+  
       
 </template>
 </category>
+
+<!-- REGLA ESPECIFICA PARA PEDIR CITA MAÑANA -->
+<category>
+<pattern> funcion cita mañana
+</pattern>
+<template>
+<think>
+<set var="fecha"> <srai> date tomorrow</srai> </set>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+
+</think>
+
+         <srai>UN SEGUNDO</srai>
+         
+      
+</template>
+</category>
+
+
+
 
 
 <!-- REGLA PARA PEDIR DE NUEVO HORA Y DIA -->

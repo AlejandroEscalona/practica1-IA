@@ -171,9 +171,9 @@
 <template>
  <think>
  <set var="hoy"><srai>DAY</srai></set>
- <set var="manana"><map name="tomorrow_es"><get var="hoy"/></map></set>
+ <set var="manana"><map name="tomorrow_ES"><get var="hoy"/></map></set>
  </think>
- <map name="tomorrow_es"><get var="manana"/></map>
+ <map name="tomorrow_ES"><get var="manana"/></map>
 </template>
 </category>
 
@@ -194,7 +194,7 @@
 <set var="days">0</set></think>
 <condition var="today">
 <li><value><get var="day"/></value><get var="days"/></li>
-<li><think><set var="today"><map name="tomorrow_es"><get var="today"/></map></set> <set var="days"><map name="successor"><get var="days"/></map></set></think> <loop/></li>
+<li><think><set var="today"><map name="tomorrow_ES"><get var="today"/></map></set> <set var="days"><map name="successor"><get var="days"/></map></set></think> <loop/></li>
 </condition></template>
 </category>
 
@@ -240,7 +240,7 @@ DAYS</srai></template>
 </think>
 <condition var="days">
 <li value="0"><get var="day"/></li>
-<li><think><set var="day"><map name="tomorrow_es"><get var="day"/></map></set>
+<li><think><set var="day"><map name="tomorrow_ES"><get var="day"/></map></set>
 <set var="days"><map name="predecessor"><get var="days"/></map></set></think> <loop/></li>
 </condition></template>
 </category>
