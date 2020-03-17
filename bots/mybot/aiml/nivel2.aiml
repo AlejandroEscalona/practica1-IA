@@ -50,7 +50,7 @@ el bot sepa guardar la cita correctamente -->
 
 
 
-<!-- REGLA PARA PEDIR CITA CON COMPLEMENTO-->
+<!-- REGLA PARA PEDIR CITA CON COMPLEMENTO (TARDE O MAÑANA)-->
 <category>
 <pattern>
 Me gustaria una cita para el * de * por la *
@@ -69,6 +69,87 @@ Me gustaria una cita para el * de * por la *
 </template>
 </category>
 
+<!-- REGLA PARA PEDIR CITA EN UNA FECHA CONCRETA -->
+<category>
+<pattern> Quiero una cita el * de * de *
+</pattern>
+<template>
+<think>
+          <srai> save dia <star/> y mes <star index="2"/> </srai>
+</think>  
+         <srai>UN SEGUNDO</srai>
+         <srai> COMPROBAR HUECO </srai>
+      
+</template>
+</category>
+
+<!-- REGLA PARA PEDIR CITA ESPECIFICANDO DIA Y COMPLEMENTO -->
+<category>
+<pattern> Quiero una cita para pasado mañana
+</pattern>
+<template>
+<think>
+<set var="fecha"> <srai> dayaftertomorrowdate</srai> </set>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+
+</think>
+
+         <srai>UN SEGUNDO</srai>
+         <srai> COMPROBAR HUECO </srai>
+      
+</template>
+</category>
+
+<!-- REGLA PARA PEDIR CITA HOY O MAÑANA -->
+<category>
+<pattern> Quiero una cita *
+</pattern>
+<template>
+
+    <set var="diad"> <star/> </set>
+    <condition var="diad">
+    <li value="hoy">
+        <set var="fecha"> <srai> date</srai> </set>
+    </li>
+    <li value="mañana"> 
+        <set var="fecha"> <srai>date tomorrow</srai> </set>
+    </li>
+    </condition>
+
+
+<think>
+<set var="dia"> 
+    <srai> ITERATE <get var="fecha"/> </srai>
+</set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set var="mes"> <get var="fecha"/> </set>
+<set var="fecha">
+    <srai> NEXT </srai>
+</set>
+<set name="anio"> <get var="fecha"/> </set>
+<srai> save dia <get var="dia"/> y mes <get var="mes"/> </srai>
+
+</think>
+
+         <srai>UN SEGUNDO</srai>
+         <srai> COMPROBAR HUECO </srai>
+      
+</template>
+</category>
+
 
 <!-- REGLA PARA PEDIR DE NUEVO HORA Y DIA -->
 <category>
@@ -78,6 +159,8 @@ Me gustaria una cita para el * de * por la *
 <srai>quisiera una cita para el <star/> de <star index="2"/> </srai>
 </template>
 </category>
+
+
 
 <!-- REGLA PARA MAÑANAS -->
 <category>

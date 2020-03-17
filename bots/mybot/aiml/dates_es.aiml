@@ -33,7 +33,7 @@
 <category><pattern>TOMORROW ^</pattern>
 <template>
 <think><set var="today"><srai>DAY</srai></set></think>
-<map name="tomorrow_es"><get var="today"/></map></template>
+<map name="tomorrow_ES"><get var="today"/></map></template>
 </category>
 
 <category><pattern>YEAR ^</pattern>
